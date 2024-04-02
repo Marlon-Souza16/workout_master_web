@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: black;
+}
+
+.container {
+    width: 95vw;
+    margin: 0 auto;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    color: white;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center; /* Alinhar verticalmente os itens */
+    font-size: 1.2rem;
+}
+
+nav ul li {
+    margin-right: 1rem; /* Adicionando espaçamento entre os itens */
+}
+
+nav ul li:last-child {
+    margin-right: 0; /* Removendo margem do último item */
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: black;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: .8rem 1rem;
+    display: block;
+    text-decoration: none;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+@media only screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav {
+        margin-top: 20px;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav ul li {
+        margin-bottom: 10px;
+    }
+}
+
+.login {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.user-image {
+    width: 3.5rem;
+    height: 3.5rem; /* Adicionando altura para manter a proporção */
+    border-radius: 50%;
+    margin-left: .7rem;
+}
+
+.nav-item {
+    transition: all 0.3s ease; /* Adicionando transição para suavizar a animação */
+    padding: .5rem;
+}
+
+.nav-item:hover {
+    background-color: white;
+    border-radius: .5rem; /* Bordas arredondadas */
+    transform: translateY(-5px); /* Movendo o botão para cima */
+}
+
+.nav-item:hover a{
+    color: black;
+}
