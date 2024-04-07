@@ -1,0 +1,16 @@
+section {
+
+    max-width: 600px; /* Limite o tamanho da seção */
+    margin: 0 auto; /* Centralize a seção horizontalmente */
+    text-align: justify; /* Justifique o conteúdo do texto */
+    color: white;
+}
+
+ul {
+    list-style-type: circle; /* Remova os marcadores da lista */
+    padding: 0; /* Remova o preenchimento padrão da lista */
+}
+
+ul li {
+    margin-bottom: .5rem; /* Adicione espaço entre os itens da lista */
+}

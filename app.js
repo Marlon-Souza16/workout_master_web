@@ -17,6 +17,10 @@ app.get("/", function (req, res) {
     res.render("home");
 });
 
+app.get("./help.ejs", function (req, res) {
+  res.render("help");
+});
+
 
 
 const PORT = process.env.PORT || 3000; // Defina a porta desejada ou use 3000 como padrão

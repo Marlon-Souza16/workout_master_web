@@ -49,6 +49,15 @@ nav ul li a {
     position: absolute;
     background-color: black;
     z-index: 1;
+    color: white;
+}
+
+#dropdown-text{
+    color: white;
+}
+
+#dropdown-text:hover{
+    background-color: rgba(245, 245, 240, .5)
 }
 
 .dropdown-content a {
