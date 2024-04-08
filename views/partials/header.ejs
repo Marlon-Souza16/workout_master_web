@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <div class="container">
         <h1>WorkoutMaster</h1>
         <nav>
             <ul>
-                <li class="nav-item"><a href="#">Home</a></li>
+                <li class="nav-item"><a href="/home">Home</a></li>
                 <li class="dropdown nav-item">
                     <a href="#">Exercícios</a>
                     <div class="dropdown-content">
@@ -37,11 +38,11 @@
                         <a id="dropdown-text" href="#">Gerais</a>
                     </div>
                 </li>
-                <li class="nav-item"><a href="/views/help.ejs">Meu Treino</a></li>
-                <form action="/help" method="get"><li class="nav-item"><a href="./help.ejs">Ajuda</a></li></form>
+                <li class="nav-item"><a href="/myRoutine">Meu Treino</a></li>
+                <li class="nav-item"><a href="/help">Ajuda</a></li>
                 <li class="login nav-item">
-                    <a href="#">Login</a>
-                    <img src="/public/images/perfil.png" alt="Imagem do usuário" class="user-image">
+                    <a href="/profile">Perfil</a>
+                    <img src="/images/foto_perfil.png" alt="Imagem do usuário" class="user-image circle-image">
                 </li>
             </ul>
         </nav>

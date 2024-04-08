@@ -1,0 +1,29 @@
+<%- include("./partials/header.ejs"); -%>
+
+<link rel="stylesheet" href="css/login.css">
+
+<div class="container-login text">
+  <h2 class="main-title">Registre-se</h2>
+  <form action="/register" method="post">
+    <div class="form-group">
+      <label for="name">Nome:</label>
+      <input placeholder="Insira seu nome para cadastro" type="text" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input placeholder="Insira seu email para cadastro" type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Senha:</label>
+      <input placeholder="Insira sua senha para cadastro" type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+      <label for="confirm-password">Confirmar Senha:</label>
+      <input placeholder="Confirme sua Senha" type="password" id="confirm-password" name="confirm-password" required>
+    </div>
+    <button type="submit">Cadastre-se</button>
+  </form>
+  <p>Já tem uma conta? <a href="/">Faça login</a></p>
+</div>
+
+<%- include("./partials/footer.ejs"); -%>

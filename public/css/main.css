@@ -2,10 +2,34 @@
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
+    color: white;
 }
 
 .text{
-    gap: .2rem;
     color: white;
     font-size: 1.1rem;
+}
+
+#centralize-text{
+    text-align: center;
+}
+
+.main-container {
+
+    max-width: 50vw; /* Limite o tamanho da seção */
+    margin: 0 auto; /* Centralize a seção horizontalmente */
+    text-align: justify; /* Justifique o conteúdo do texto */
+    color: white;
+}
+
+
+.centralize-image{
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 5rem;
+}
+
+.circle-image{
+    border-radius: 50%;
+    border: 1px solid #ccc;
 }

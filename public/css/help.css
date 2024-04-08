@@ -1,0 +1,50 @@
+/* Estilos para o formulário de entrada de texto */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+input[type="text"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.help{
+    max-width: 70vw;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 75vh;
+}
+
+.chatbot{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.navbar{
+    margin-bottom: 22rem;
+}
