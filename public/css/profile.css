@@ -1,0 +1,45 @@
+.profile-image-size{
+    width: 20rem;
+    height: 20rem;
+}
+
+.profile-link{
+    color: aqua;
+}
+
+.text input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80%;
+    margin-right: 10px;
+    background: none;
+    color: white;
+}
+
+.edit-icon {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.fa-pencil-alt {
+    font-size: .9rem;
+}
+
+.save-button {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: #45a049; /* Verde mais escuro ao passar o mouse */
+}
+
+.save-button i {
+    margin-right: 5px;
+}

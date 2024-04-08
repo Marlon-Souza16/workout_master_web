@@ -1,0 +1,60 @@
+<%- include("./partials/header.ejs"); -%>
+
+<link rel="stylesheet" href="css/myRoutine.css">
+
+<div class="main-container">
+  <h2 id="centralize-text">Minha Rotina de Treino</h2>
+  
+  <% if (userLoggedIn) { %>
+    
+    <% Object.keys(groupedExercises).forEach(day => { %>
+      <div class="workout-routine">
+        <h3><%= day %></h3>
+        <button onclick="addNewExercise('<%= day %>')">Adicionar Novo Exercício</button>
+        <ul>
+          <% groupedExercises[day].forEach(dayExercise => { %>
+            <% dayExercise.exercises.forEach(exercise => { %>
+              <li>
+                <span><strong><%= exercise.name %></strong> - <%= exercise.muscleGroup %></span>
+                <span>
+                  <button data-exercise-id="<%= exercise._id %>" onclick="editExercise('<%= exercise._id %>')">Editar</button>
+                  <button data-exercise-id="<%= exercise._id %>" onclick="deleteExercise('<%= exercise._id %>')">Excluir</button>
+                </span>
+                <br>
+                Descrição: <span id="description_<%= exercise._id %>"><%= exercise.description %></span><br>
+                <% if (exercise.imageUrl) { %>
+                  <img src="<%= exercise.imageUrl %>" alt="Imagem do exercício">
+                <% } else if (exercise.videoUrl) { %>
+                  <iframe width="560" height="315" src="<%= exercise.videoUrl %>" frameborder="0" allowfullscreen></iframe>
+                <% } %>
+                <br>
+              </li>
+            <% }); %>
+          <% }); %>
+        </ul>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <p>Você precisa fazer login para acessar sua rotina de treino.</p>
+    <a href="/login">Fazer Login</a>
+  <% } %>
+</div>
+
+<%- include("./partials/footer.ejs"); -%>
+
+<script>
+  function editExercise(exerciseId) {
+    // Redirecionar para a página de edição de exercício com o ID do exercício
+    window.location.href = '/editExercise/' + exerciseId;
+  }
+
+  function deleteExercise(exerciseId) {
+    // Implementar a funcionalidade de exclusão aqui
+    console.log('Excluir exercício com ID:', exerciseId);
+  }
+
+  function addNewExercise(day) {
+    // Implementar a funcionalidade de adição de novo exercício aqui
+    console.log('Adicionar novo exercício para o dia:', day);
+  }
+</script>

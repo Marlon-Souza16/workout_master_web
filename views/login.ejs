@@ -1,0 +1,21 @@
+<%- include("./partials/header.ejs"); -%>
+
+<link rel="stylesheet" href="css/login.css">
+
+<div class="container-login text">
+  <h2 class="main-title">Faça seu login para aproveitar tudo que o site tem a oferecer !</h2>
+  <form action="/login" method="post">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required placeholder="Insira seu email para login">
+    </div>
+    <div class="form-group">
+      <label for="password">Senha:</label>
+      <input type="password" id="password" name="password" required placeholder="Insira sua senha">
+    </div>
+    <button type="submit">Entrar</button>
+  </form>
+  <p>Não tem uma conta? <a href="/register">Cadastre-se</a></p>
+</div>
+
+<%- include("./partials/footer.ejs"); -%>

@@ -1,18 +1,26 @@
 <%- include("./partials/header.ejs"); -%>
 
+<link rel="stylesheet" href="css/help.css">
 
-<main>
+<main class="help">
 
-<p>teste</p>
+    <div class="chatbot">
+        <!-- Barra de Navegação -->
+        <nav class="navbar">
+            <div>
+                <span class="main-title" id="centralize-text">Qual sua dúvida sobre treinos?</span>
+            </div>
+        </nav>
+
+        <!-- Formulário para entrada de texto -->
+        <form action="/processar-resposta" method="POST">
+            <input type="text" name="userInput" placeholder="Digite sua pergunta sobre treinamento...">
+            <button type="submit">Enviar</button>
+        </form>
+
+    </div>
 
 
 </main>
-
-
-
-
-
-
-
 
 <%- include("./partials/footer.ejs"); -%>

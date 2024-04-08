@@ -1,0 +1,64 @@
+<%- include("./partials/header.ejs"); -%>
+
+<link rel="stylesheet" href="css/profile.css">
+
+<div class="main-container">
+    <img class="centralize-image circle-image profile-image-size" src="<%= currentUser.image %>" alt="Imagem do usuário">
+    <p class="text"><strong>Nome:</strong> 
+        <span id="name"><%= currentUser.name %></span>
+        <span class="edit-icon" onclick="editField('name')"><i class="fas fa-pencil-alt"></i></span>
+    </p>
+    <p class="text"><strong>Email:</strong> 
+        <span id="email"><%= currentUser.email %></span>
+        <span class="edit-icon" onclick="editField('email')"><i class="fas fa-pencil-alt"></i></span>
+    </p>
+    <p class="text"><strong>CPF:</strong> 
+        <span id="cpf"><%= currentUser.cpf %></span>
+        <span class="edit-icon" onclick="editField('cpf')"><i class="fas fa-pencil-alt"></i></span>
+    </p>
+    <button id="saveButton" onclick="saveChanges()" style="display: none;" class="save-button">
+        <i class="fas fa-check"></i> Salvar
+    </button>
+    <% if (currentUser.hasWorkoutRoutine) { %>
+       <p class="text"> Tem treino associado: <a class="profile-link" href="/myRoutine">SIM</a></p>
+    <% } else { %>
+        <span>Tem treino associado: NÃO</span>
+    <% } %>
+</div>
+
+<script>
+    function editField(fieldId) {
+        var field = document.getElementById(fieldId);
+        var fieldValue = field.innerText;
+        var inputField = document.createElement('input');
+        inputField.setAttribute('type', 'text');
+        inputField.setAttribute('value', fieldValue);
+        field.innerHTML = '';
+        field.appendChild(inputField);
+        var saveButton = document.createElement('button');
+        saveButton.textContent = 'Salvar';
+        saveButton.onclick = function() {
+            saveChanges(fieldId);
+        };
+        field.appendChild(saveButton);
+        var editIcons = document.querySelectorAll('.edit-icon');
+        editIcons.forEach(function(icon) {
+            icon.style.display = 'none';
+        });
+    }
+
+    function saveChanges(fieldId) {
+        var newValue = document.getElementById(fieldId).querySelector('input').value;
+
+        var field = document.getElementById(fieldId);
+        field.innerHTML = newValue;
+        document.getElementById('saveButton').style.display = 'none';
+        var editIcons = document.querySelectorAll('.edit-icon');
+        editIcons.forEach(function(icon) {
+            icon.style.display = 'inline-block';
+        });
+    }
+
+</script>
+
+<%- include("./partials/footer.ejs"); -%>
