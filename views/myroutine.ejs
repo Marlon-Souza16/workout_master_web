@@ -3,23 +3,34 @@
 <link rel="stylesheet" href="css/myRoutine.css">
 
 <div class="main-container">
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <i class="fa-regular fa-circle-question fa-2xl"></i>
+      <p>Tem certeza que deseja excluir este exercício?</p>
+      <div id="inline_align"><button id="confirmBtn">SIM</button>
+      <button id="cancelBtn">NÃO</button></div>
+    </div>
+  </div>
+  <div id="overlay"></div>
+  
+
   <h2 id="centralize-text">Minha Rotina de Treino</h2>
   
   <% if (userLoggedIn) { %>
     
     <% Object.keys(groupedExercises).forEach(day => { %>
       <div class="workout-routine">
-        <h3><%= day %></h3>
-        <button onclick="addNewExercise('<%= day %>')">Adicionar Novo Exercício</button>
+        <h3 id="align-button"><%= day %><button class="addNewExercise" onclick="openAddExerciseModal('<%= day %>')">+</button><%- include("./partials/addExercise.ejs"); -%></h3>
         <ul>
           <% groupedExercises[day].forEach(dayExercise => { %>
             <% dayExercise.exercises.forEach(exercise => { %>
               <li>
                 <span><strong><%= exercise.name %></strong> - <%= exercise.muscleGroup %></span>
                 <span>
-                  <button data-exercise-id="<%= exercise._id %>" onclick="editExercise('<%= exercise._id %>')">Editar</button>
-                  <button data-exercise-id="<%= exercise._id %>" onclick="deleteExercise('<%= exercise._id %>')">Excluir</button>
+                  <span class="edit-icon" onclick="editExercise('<%= exercise._id %>')"><i class="fas fa-pencil-alt"></i></span>
+                  <span class="delete-icon" onclick="deleteExercise('<%= exercise._id %>')"><i class="fa-regular fa-trash-can"></i></span>
                 </span>
+                <br>
                 <br>
                 Descrição: <span id="description_<%= exercise._id %>"><%= exercise.description %></span><br>
                 <% if (exercise.imageUrl) { %>
@@ -43,18 +54,72 @@
 <%- include("./partials/footer.ejs"); -%>
 
 <script>
+  
   function editExercise(exerciseId) {
-    // Redirecionar para a página de edição de exercício com o ID do exercício
-    window.location.href = '/editExercise/' + exerciseId;
+    var descriptionField = document.getElementById('description_' + exerciseId);
+    var exerciseDescription = descriptionField.innerText;
+    var inputField = document.createElement('textarea');
+    inputField.setAttribute('rows', '4'); 
+    inputField.setAttribute('cols', '50');
+    inputField.textContent = exerciseDescription;
+    descriptionField.innerHTML = ''; 
+    descriptionField.appendChild(inputField);
+
+    var saveButton = document.createElement('button');
+    saveButton.textContent = 'Salvar';
+    saveButton.onclick = function() {
+        saveExerciseChanges(exerciseId);
+    };
+    descriptionField.appendChild(saveButton);
+
+    var editIcons = descriptionField.querySelectorAll('.edit-icon');
+    editIcons.forEach(function(icon) {
+        icon.style.display = 'none';
+    });
   }
 
+  function saveExerciseChanges(exerciseId) {
+    var newDescription = document.getElementById('description_' + exerciseId).querySelector('textarea').value;
+
+    var descriptionField = document.getElementById('description_' + exerciseId);
+    descriptionField.innerHTML = newDescription;
+
+    var saveButton = descriptionField.querySelector('button');
+    saveButton.style.display = 'none';
+
+    var editIcons = descriptionField.querySelectorAll('.edit-icon');
+    editIcons.forEach(function(icon) {
+        icon.style.display = 'inline-block';
+    });
+  }
+
+
   function deleteExercise(exerciseId) {
-    // Implementar a funcionalidade de exclusão aqui
-    console.log('Excluir exercício com ID:', exerciseId);
+    var confirmationModal = document.getElementById("confirmationModal");
+    var overlay = document.getElementById("overlay");
+    
+    confirmationModal.style.display = "block";
+    overlay.style.display = "block";
+    
+    var confirmBtn = document.getElementById("confirmBtn");
+    var cancelBtn = document.getElementById("cancelBtn");
+    
+    confirmBtn.onclick = function() {
+        var exerciseElement = document.getElementById('description_' + exerciseId).closest('li');
+        exerciseElement.remove();
+        confirmationModal.style.display = "none";
+        overlay.style.display = "none";
+    };
+    
+    cancelBtn.onclick = function() {
+        confirmationModal.style.display = "none";
+        overlay.style.display = "none";
+    };
+
   }
 
   function addNewExercise(day) {
-    // Implementar a funcionalidade de adição de novo exercício aqui
     console.log('Adicionar novo exercício para o dia:', day);
   }
+
 </script>
