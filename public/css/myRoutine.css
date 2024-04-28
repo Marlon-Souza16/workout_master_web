@@ -1,4 +1,3 @@
-/* Estilos para a página de Minha Rotina de Treino */
 body{
   color: white;
 }
@@ -61,3 +60,10 @@ body{
     margin-bottom: 0;
   }
   
+  #align-button{
+    display: flex;
+    align-items: center;
+  }
+
+  
+

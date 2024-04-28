@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/addExercise.css">
+
+<div id="addExerciseModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAddExerciseModal()"><i class="fa-regular fa-circle-xmark"></i></span>
+      <h2>Inserir Novo Exercício</h2>
+      <form id="addExerciseForm">
+        <label for="exerciseName">Nome do Exercício:</label>
+        <input type="text" id="exerciseName" name="exerciseName">
+        <label for="exerciseType">Tipo de Exercício:</label>
+        <input type="text" id="exerciseType" name="exerciseType">
+        <label for="exerciseSets">Número de Séries:</label>
+        <input type="number" id="exerciseSets" name="exerciseSets">
+        <label for="exerciseReps">Número de Repetições:</label>
+        <input type="number" id="exerciseReps" name="exerciseReps">
+        <label for="exerciseDescription">Descrição:</label>
+        <textarea id="exerciseDescription" name="exerciseDescription"></textarea>
+        <label for="exerciseMedia">Imagem ou Vídeo:</label>
+        <input type="file" id="exerciseMedia" name="exerciseMedia">
+        <button type="submit">Adicionar Exercício</button>
+      </form>
+    </div>
+  </div>
+  <div class="overlay"></div>
+
+<script>
+
+function openAddExerciseModal(day) {
+  var addExerciseModal = document.getElementById('addExerciseModal');
+  addExerciseModal.style.display = 'block';
+  overlay.style.display = 'block';
+}
+
+function closeAddExerciseModal() {
+  var addExerciseModal = document.getElementById('addExerciseModal');
+  addExerciseModal.style.display = 'none';
+  overlay.style.display = 'none';
+}
+
+document.getElementById('addExerciseForm').addEventListener('submit', function(event) {
+  event.preventDefault(); 
+  
+  var exerciseName = document.getElementById('exerciseName').value;
+  var exerciseType = document.getElementById('exerciseType').value;
+  var exerciseSets = document.getElementById('exerciseSets').value;
+  var exerciseReps = document.getElementById('exerciseReps').value;
+  var exerciseDescription = document.getElementById('exerciseDescription').value;
+  var exerciseMedia = document.getElementById('exerciseMedia').value; 
+  
+  closeAddExerciseModal();
+});
+
+
+
+</script>
