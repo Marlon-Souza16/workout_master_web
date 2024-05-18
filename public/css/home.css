@@ -14,3 +14,7 @@ ul {
 ul li {
     margin-bottom: .5rem; /* Adicione espaço entre os itens da lista */
 }
+
+.image-center{
+    text-align: center;
+}
