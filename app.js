@@ -1,4 +1,3 @@
-const axios = require('axios');
 const express = require('express');
 const bodyParser = require("body-parser");
 const _ = require('lodash');
@@ -10,10 +9,12 @@ const fs = require('fs');
 const sequelize = require('./config/database');
 const User = require('./models/Users');
 const Workout = require('./models/Workout');
+const ExerciseDetails = require('./models/ExerciseDetails'); // Adicionado novo modelo
+const StrechesDetails = require('./models/StrechesDetails'); // Adicionado novo modelo
 const bcrypt = require('bcrypt');
 let currentUser;
 
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync().then(() => {
   console.log('Banco de dados sincronizado!');
 });
 
@@ -22,6 +23,12 @@ app.use(express.json())
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+// Middleware para definir currentUser globalmente
+app.use((req, res, next) => {
+  res.locals.currentUser = currentUser || null;
+  next();
+});
 
 // Verifica se a pasta uploads existe, caso contrário, cria
 const uploadDir = path.join(__dirname, 'public/uploads');
@@ -118,6 +125,37 @@ app.post('/myRoutine/deleteExercise', async (req, res) => {
 });
 
 
+app.get('/exercises', async (req, res) => {
+  try {
+    const exercises = await ExerciseDetails.findAll();
+    res.render('exercises', { exercises: exercises });
+  } catch (error) {
+    console.error('Erro ao buscar detalhes dos exercícios:', error);
+    res.status(500).send('Erro ao buscar detalhes dos exercícios');
+  }
+});
+
+
+
+app.post('/exercises/add', async (req, res) => {
+  const { exercise_name, muscle_group, description, image_url, video_url } = req.body;
+
+  try {
+    const newExercise = await ExerciseDetails.create({
+      exercise_name,
+      muscle_group,
+      description,
+      image_url,
+      video_url
+    });
+
+    res.redirect('/exercises');
+  } catch (error) {
+    console.error('Erro ao adicionar detalhes do exercício:', error);
+    res.status(500).send('Erro ao adicionar detalhes do exercício');
+  }
+});
+
 app.get("/", function (req, res) {
   res.render("login");
 });
@@ -125,6 +163,149 @@ app.get("/", function (req, res) {
 app.get("/register", function (req, res) {
   res.render("register");
 });
+
+// Rota para adicionar novo exercício no MyRoutine
+app.post('/exercises/addExercise', async (req, res) => {
+  const { name, muscleGroup, description, imageUrl, videoUrl } = req.body;
+
+  try {
+    if (!currentUser) {
+      return res.status(401).send('Usuário não autenticado');
+    }
+
+    const newExercise = await Workout.create({
+      user_id: currentUser.id,
+      name,
+      muscle_group: muscleGroup,
+      description,
+      image_url: imageUrl,
+      video_url: videoUrl
+    });
+
+    res.redirect('/exercises');
+  } catch (error) {
+    console.error('Erro ao adicionar exercício:', error);
+    res.status(500).send('Erro ao adicionar exercício');
+  }
+});
+
+// Rota para deletar exercício no Workout
+app.post('/exercises/deleteExercise', async (req, res) => {
+  const { exerciseId } = req.body;
+
+  try {
+    const exerciseToDelete = await Workout.findOne({ where: { id: exerciseId, user_id: currentUser.id } });
+
+    if (exerciseToDelete) {
+      await exerciseToDelete.destroy();
+      res.redirect('/exercises');
+    } else {
+      res.status(404).send('Exercício não encontrado ou usuário não autorizado');
+    }
+  } catch (error) {
+    console.error('Erro ao deletar exercício:', error);
+    res.status(500).send('Erro ao deletar exercício');
+  }
+});
+
+// Rota para exibir todos os alongamentos
+app.get('/stretches', async (req, res) => {
+  try {
+    const stretches = await StrechesDetails.findAll();
+    res.render('stretches', { exercises: stretches });
+  } catch (error) {
+    console.error('Erro ao buscar detalhes dos alongamentos:', error);
+    res.status(500).send('Erro ao buscar detalhes dos alongamentos');
+  }
+});
+
+// Rota para exibir formulário para adicionar novo alongamento
+app.get('/stretches/add', (req, res) => {
+  res.render('add-stretch');
+});
+
+// Rota para adicionar novo alongamento
+app.post('/stretches/add', async (req, res) => {
+  const { exercise_name, muscle_group, description, image_url, video_url } = req.body;
+
+  try {
+    const newStretch = await StrechesDetails.create({
+      exercise_name,
+      muscle_group,
+      description,
+      image_url,
+      video_url
+    });
+
+    res.redirect('/stretches');
+  } catch (error) {
+    console.error('Erro ao adicionar detalhes do alongamento:', error);
+    res.status(500).send('Erro ao adicionar detalhes do alongamento');
+  }
+});
+
+// Rota para deletar alongamento
+app.post('/stretches/delete', async (req, res) => {
+  const { stretchId } = req.body;
+
+  try {
+    const stretchToDelete = await StrechesDetails.findOne({ where: { id: stretchId } });
+
+    if (stretchToDelete) {
+      await stretchToDelete.destroy();
+      res.redirect('/stretches');
+    } else {
+      res.status(404).send('Alongamento não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao deletar alongamento:', error);
+    res.status(500).send('Erro ao deletar alongamento');
+  }
+});
+
+// Rota para exibir formulário para editar um alongamento
+app.get('/stretches/edit/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const stretch = await StrechesDetails.findOne({ where: { id } });
+
+    if (stretch) {
+      res.render('edit-stretch', { stretch });
+    } else {
+      res.status(404).send('Alongamento não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar detalhes do alongamento:', error);
+    res.status(500).send('Erro ao buscar detalhes do alongamento');
+  }
+});
+
+// Rota para editar um alongamento
+app.post('/stretches/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { exercise_name, muscle_group, description, image_url, video_url } = req.body;
+
+  try {
+    const stretch = await StrechesDetails.findOne({ where: { id } });
+
+    if (stretch) {
+      stretch.exercise_name = exercise_name;
+      stretch.muscle_group = muscle_group;
+      stretch.description = description;
+      stretch.image_url = image_url;
+      stretch.video_url = video_url;
+      await stretch.save();
+      res.redirect('/stretches');
+    } else {
+      res.status(404).send('Alongamento não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao editar detalhes do alongamento:', error);
+    res.status(500).send('Erro ao editar detalhes do alongamento');
+  }
+});
+
 
 app.get("/help", function (req, res) {
   res.render("help");

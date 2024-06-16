@@ -15,34 +15,20 @@
             <ul>
                 <li class="nav-item"><a href="/home">Home <i class="fa-solid fa-house"></i></a></li>
                 <li class="dropdown nav-item">
-                    <a href="#">Exercícios</a>
-                    <div class="dropdown-content">
-                        <a id="dropdown-text" href="#">Peito</a>
-                        <a id="dropdown-text" href="#">Costas</a>
-                        <a id="dropdown-text" href="#">Ombros</a>
-                        <a id="dropdown-text" href="#">Bíceps</a>
-                        <a id="dropdown-text" href="#">Tríceps</a>
-                        <a id="dropdown-text" href="#">Pernas</a>
-                        <a id="dropdown-text" href="#">Gerais</a>
-                    </div>
+                    <a href="/exercises">Exercícios</a>
                 </li>
                 <li class="dropdown nav-item">
-                    <a href="#">Alongamentos</a>
-                    <div class="dropdown-content">
-                        <a id="dropdown-text" href="#">Peito</a>
-                        <a id="dropdown-text" href="#">Costas</a>
-                        <a id="dropdown-text" href="#">Ombros</a>
-                        <a id="dropdown-text" href="#">Bíceps</a>
-                        <a id="dropdown-text" href="#">Tríceps</a>
-                        <a id="dropdown-text" href="#">Pernas</a>
-                        <a id="dropdown-text" href="#">Gerais</a>
-                    </div>
+                    <a href="/stretches">Alongamentos</a>
                 </li>
                 <li class="nav-item"><a href="/myRoutine">Meu Treino <i class="fa-solid fa-dumbbell"></i></a></li>
                 <li class="nav-item"><a href="/help">Ajuda <i class="fa-solid fa-comment-dots"></i></a></li>
                 <li class="login nav-item">
                     <a href="/profile">Perfil</a>
-                    <img src="<%= currentUser.profile_image %>" alt="Imagem do usuário" class="user-image circle-image">
+                    <% if (currentUser && currentUser.profile_image) { %>
+                        <img src="<%= currentUser.profile_image %>" alt="Imagem do usuário" class="user-image circle-image">
+                    <% } else { %>
+                        <img src="/path/to/default/image.png" alt="Imagem do usuário" class="user-image circle-image">
+                    <% } %>
                 </li>
             </ul>
         </nav>

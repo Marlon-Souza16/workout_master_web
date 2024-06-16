@@ -1,0 +1,53 @@
+<%- include("./partials/header.ejs"); -%>
+
+<link rel="stylesheet" href="css/myRoutine.css">
+
+<div class="main-container">
+  <h2 id="centralize-text">Alongamentos</h2>
+  <button onclick="openAddExerciseModal()">Adicionar Novo Alongamento</button>
+
+  <!-- Listagem de exercícios -->
+  <div class="exercises-list">
+    <% exercises.forEach(exercise => { %>
+      <div class="exercise-item">
+        <h3 class="text_to_upper"><%= exercise.exercise_name %></h3>
+        <p>Grupo Muscular: <%= exercise.muscle_group %></p>
+        <p><%= exercise.description %></p>
+        <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
+        <a href="<%= exercise.video_url %>" target="_blank">Ver Vídeo</a>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<div id="addExerciseModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeAddExerciseModal()">&times;</span>
+    <h2>Adicionar Novo Alongamento</h2>
+    <form action="/stretches/add" method="POST"> <!-- Alterado para a rota correta -->
+      <label for="exercise_name">Nome do Alongamento:</label>
+      <input type="text" id="exercise_name" name="exercise_name" required><br>
+      <label for="muscle_group">Grupo Muscular:</label>
+      <input type="text" id="muscle_group" name="muscle_group" required><br>
+      <label for="description">Descrição:</label>
+      <textarea id="description" name="description"></textarea><br>
+      <label for="image_url">URL da Imagem:</label>
+      <input type="text" id="image_url" name="image_url"><br>
+      <label for="video_url">URL do Vídeo:</label>
+      <input type="text" id="video_url" name="video_url"><br>
+      <button type="submit">Adicionar Exercício</button>
+    </form>
+  </div>
+</div>
+
+<%- include("./partials/footer.ejs"); -%>
+
+<script>
+  function openAddExerciseModal() {
+    document.getElementById('addExerciseModal').style.display = 'block';
+  }
+
+  function closeAddExerciseModal() {
+    document.getElementById('addExerciseModal').style.display = 'none';
+  }
+</script>
