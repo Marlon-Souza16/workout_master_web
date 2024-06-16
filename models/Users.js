@@ -1,8 +1,7 @@
-// models/User.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Users = sequelize.define('Users', {
+const User = sequelize.define('User', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -12,18 +11,23 @@ const Users = sequelize.define('Users', {
     allowNull: false,
     unique: true
   },
-  cpf: {
+  password: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
+  },
+  cpf: {
+    type: DataTypes.STRING(11),
+    allowNull: false
   },
   profile_image: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   has_workout_routine: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   }
+}, {
+  tableName: 'Users'
 });
 
-module.exports = Users;
+module.exports = User;

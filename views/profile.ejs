@@ -3,7 +3,11 @@
 <link rel="stylesheet" href="css/profile.css">
 
 <div class="main-container">
-    <img class="centralize-image circle-image profile-image-size" src="<%= currentUser.image %>" alt="Imagem do usuário">
+    <img class="centralize-image circle-image profile-image-size" src="<%= currentUser.profile_image %>" alt="Imagem do usuário" id="profileImage">
+    <form id="imageUploadForm" action="/profile/uploadImage" method="POST" enctype="multipart/form-data">
+        <input type="file" name="profile_image" accept="image/*" required>
+        <button type="submit" class="save-button">Upload Imagem</button>
+    </form>
     <p class="text"><strong>Nome:</strong> 
         <span id="name"><%= currentUser.name %></span>
         <span class="edit-icon" onclick="editField('name')"><i class="fas fa-pencil-alt"></i></span>
@@ -59,6 +63,11 @@
         });
     }
 
+    document.getElementById('imageUploadForm').addEventListener('submit', function() {
+        setTimeout(function() {
+            location.reload();
+        }, 1000);
+    });
 </script>
 
 <%- include("./partials/footer.ejs"); -%>
