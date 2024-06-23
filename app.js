@@ -404,7 +404,7 @@ app.post('/', async (req, res) => {
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
-        res.redirect('/profile');
+        res.redirect('/home');
       } else {
         res.status(401).send('<p>Senha incorreta. <a href="/reset-password">Clique aqui</a> para redefinir sua senha.</p>');
       }
