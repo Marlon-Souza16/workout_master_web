@@ -11,12 +11,25 @@
     <% exercises.forEach(exercise => { %>
       <div class="exercise-item">
         <h3 class="text_to_upper"><%= exercise.exercise_name %>
-        <button class="edit-icon" onclick="openEditExerciseModal('<%= exercise.id %>', '<%= exercise.exercise_name %>', '<%= exercise.muscle_group %>', '<%= exercise.description %>', '<%= exercise.image_url %>', '<%= exercise.video_url %>')"><i class="fas fa-pencil-alt"></i></button>
-        <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= exercise.exercise_name %>')"><i class="fa-regular fa-trash-can"></i></button></h3>
+        <button class="edit-icon" onclick="openEditExerciseModal('<%= exercise.id %>', '<%= escape(exercise.exercise_name) %>', '<%= escape(exercise.muscle_group) %>', '<%= escape(exercise.description) %>', '<%= escape(exercise.image_url) %>', '<%= escape(exercise.video_url) %>')">
+          <i class="fas fa-pencil-alt fa-lg"></i> <!-- Aqui aplicamos o tamanho fa-lg -->
+        </button>
+        <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= escape(exercise.exercise_name) %>')">
+          <i class="fa-regular fa-trash-can fa-lg"></i> <!-- Aqui aplicamos o tamanho fa-lg -->
+        </button></h3>
         <p class="text_to_upper">Grupo Muscular: <%= exercise.muscle_group %></p>
         <p class="text_justify"><%= exercise.description %></p>
-        <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
-        <a href="<%= exercise.video_url %>" target="_blank"></a>
+        <% if (exercise.image_url) { %>
+          <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
+          <% } %>
+          
+          <% if (exercise.video_url) { %>
+            <% let videoUrl = exercise.video_url; %>
+            <% if (videoUrl.includes('youtube.com/watch')) { %>
+              <% videoUrl = videoUrl.replace('watch?v=', 'embed/'); %>
+            <% } %>
+            <iframe src="<%= videoUrl %>" style="width: 100%; max-width: 300px; height: auto;" frameborder="0" allowfullscreen></iframe>
+          <% } %>
       </div>
     <% }) %>
   </div>
@@ -66,9 +79,10 @@
 
 <!-- Modal para Confirmar Exclusão -->
 <div id="deleteExerciseModal" class="modal" style="display: none;">
-  <div class="modal-content">
+  <div class="modal-content-delete">
     <span class="close" onclick="closeDeleteExerciseModal()">&times;</span>
-    <h2>Excluir Alongamento</h2>
+    <h3>Excluir Alongamento</h3>
+    <span><i class="fa-regular fa-4x fa-circle-question"></i></span>
     <p id="deleteExerciseMessage"></p>
     <form id="deleteExerciseForm" action="/stretches/delete" method="POST">
       <input type="hidden" id="delete_exercise_id" name="exercise_id">
@@ -93,11 +107,11 @@
 
   function openEditExerciseModal(id, name, muscle_group, description, image_url, video_url) {
     document.getElementById('edit_exercise_id').value = id;
-    document.getElementById('edit_exercise_name').value = name;
-    document.getElementById('edit_muscle_group').value = muscle_group;
-    document.getElementById('edit_description').value = description;
-    document.getElementById('edit_image_url').value = image_url;
-    document.getElementById('edit_video_url').value = video_url;
+    document.getElementById('edit_exercise_name').value = unescape(name);
+    document.getElementById('edit_muscle_group').value = unescape(muscle_group);
+    document.getElementById('edit_description').value = unescape(description);
+    document.getElementById('edit_image_url').value = unescape(image_url);
+    document.getElementById('edit_video_url').value = unescape(video_url);
     document.getElementById('editExerciseModal').style.display = 'block';
     document.getElementById('overlay').style.display = 'block';
   }
@@ -109,7 +123,7 @@
 
   function openDeleteExerciseModal(id, name) {
     document.getElementById('delete_exercise_id').value = id;
-    document.getElementById('deleteExerciseMessage').innerText = `Tem certeza que deseja excluir o alongamento "${name}"?`;
+    document.getElementById('deleteExerciseMessage').innerText = `Tem certeza que deseja excluir o alongamento "${unescape(name)}"?`;
     document.getElementById('deleteExerciseModal').style.display = 'block';
     document.getElementById('overlay').style.display = 'block';
   }
