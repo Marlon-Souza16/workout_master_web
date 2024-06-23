@@ -148,3 +148,7 @@ button:hover {
 .text_to_upper{
   text-transform: uppercase;
 }
+
+.text_justify{
+  text-align: justify;
+}

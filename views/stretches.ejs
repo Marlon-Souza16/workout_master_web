@@ -11,10 +11,10 @@
     <% exercises.forEach(exercise => { %>
       <div class="exercise-item">
         <h3 class="text_to_upper"><%= exercise.exercise_name %></h3>
-        <p>Grupo Muscular: <%= exercise.muscle_group %></p>
-        <p><%= exercise.description %></p>
+        <p class="text_to_upper">Grupo Muscular: <%= exercise.muscle_group %></p>
+        <p class="text_justify"><%= exercise.description %></p>
         <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
-        <a href="<%= exercise.video_url %>" target="_blank">Ver Vídeo</a>
+        <a href="<%= exercise.video_url %>" target="_blank"></a>
       </div>
     <% }) %>
   </div>
