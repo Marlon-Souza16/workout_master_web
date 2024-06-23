@@ -77,7 +77,7 @@
   </div>
 </div>
 
-<div id="confirmationModal" class="modal" style="display: none;">
+<div id="deleteExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
     <span class="close" onclick="closeConfirmationModal()">&times;</span>
     <p>Você tem certeza que deseja deletar este exercício?</p>
@@ -140,7 +140,7 @@
   }
 
   function deleteExercise(exerciseId) {
-    var confirmationModal = document.getElementById("confirmationModal");
+    var confirmationModal = document.getElementById("deleteExerciseModal");
     var overlay = document.getElementById("overlay");
     
     confirmationModal.style.display = "block";
