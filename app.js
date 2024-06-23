@@ -124,7 +124,6 @@ app.post('/myRoutine/deleteExercise', async (req, res) => {
   }
 });
 
-
 app.get('/exercises', async (req, res) => {
   try {
     const exercises = await ExerciseDetails.findAll();
@@ -134,8 +133,6 @@ app.get('/exercises', async (req, res) => {
     res.status(500).send('Erro ao buscar detalhes dos exercícios');
   }
 });
-
-
 
 app.post('/exercises/add', async (req, res) => {
   const { exercise_name, muscle_group, description, image_url, video_url } = req.body;
@@ -153,6 +150,48 @@ app.post('/exercises/add', async (req, res) => {
   } catch (error) {
     console.error('Erro ao adicionar detalhes do exercício:', error);
     res.status(500).send('Erro ao adicionar detalhes do exercício');
+  }
+});
+
+app.post('/exercises/edit', async (req, res) => {
+  const { exercise_id, exercise_name, muscle_group, description, image_url, video_url } = req.body;
+
+  try {
+    const exercise = await ExerciseDetails.findOne({ where: { id: exercise_id } });
+
+    if (exercise) {
+      exercise.exercise_name = exercise_name;
+      exercise.muscle_group = muscle_group;
+      exercise.description = description;
+      exercise.image_url = image_url;
+      exercise.video_url = video_url;
+      await exercise.save();
+
+      res.redirect('/exercises');
+    } else {
+      res.status(404).send('Exercício não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao editar detalhes do exercício:', error);
+    res.status(500).send('Erro ao editar detalhes do exercício');
+  }
+});
+
+app.post('/exercises/delete', async (req, res) => {
+  const { exercise_id } = req.body;
+
+  try {
+    const exercise = await ExerciseDetails.findOne({ where: { id: exercise_id } });
+
+    if (exercise) {
+      await exercise.destroy();
+      res.redirect('/exercises');
+    } else {
+      res.status(404).send('Exercício não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao deletar exercício:', error);
+    res.status(500).send('Erro ao deletar exercício');
   }
 });
 
@@ -219,11 +258,6 @@ app.get('/stretches', async (req, res) => {
   }
 });
 
-// Rota para exibir formulário para adicionar novo alongamento
-app.get('/stretches/add', (req, res) => {
-  res.render('add-stretch');
-});
-
 // Rota para adicionar novo alongamento
 app.post('/stretches/add', async (req, res) => {
   const { exercise_name, muscle_group, description, image_url, video_url } = req.body;
@@ -244,12 +278,37 @@ app.post('/stretches/add', async (req, res) => {
   }
 });
 
-// Rota para deletar alongamento
-app.post('/stretches/delete', async (req, res) => {
-  const { stretchId } = req.body;
+// Rota para editar um alongamento
+app.post('/stretches/edit', async (req, res) => {
+  const { exercise_id, exercise_name, muscle_group, description, image_url, video_url } = req.body;
 
   try {
-    const stretchToDelete = await StrechesDetails.findOne({ where: { id: stretchId } });
+    const stretch = await StrechesDetails.findOne({ where: { id: exercise_id } });
+
+    if (stretch) {
+      stretch.exercise_name = exercise_name;
+      stretch.muscle_group = muscle_group;
+      stretch.description = description;
+      stretch.image_url = image_url;
+      stretch.video_url = video_url;
+      await stretch.save();
+
+      res.redirect('/stretches');
+    } else {
+      res.status(404).send('Alongamento não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao editar detalhes do alongamento:', error);
+    res.status(500).send('Erro ao editar detalhes do alongamento');
+  }
+});
+
+// Rota para deletar alongamento
+app.post('/stretches/delete', async (req, res) => {
+  const { exercise_id } = req.body;
+
+  try {
+    const stretchToDelete = await StrechesDetails.findOne({ where: { id: exercise_id } });
 
     if (stretchToDelete) {
       await stretchToDelete.destroy();
@@ -262,50 +321,6 @@ app.post('/stretches/delete', async (req, res) => {
     res.status(500).send('Erro ao deletar alongamento');
   }
 });
-
-// Rota para exibir formulário para editar um alongamento
-app.get('/stretches/edit/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const stretch = await StrechesDetails.findOne({ where: { id } });
-
-    if (stretch) {
-      res.render('edit-stretch', { stretch });
-    } else {
-      res.status(404).send('Alongamento não encontrado');
-    }
-  } catch (error) {
-    console.error('Erro ao buscar detalhes do alongamento:', error);
-    res.status(500).send('Erro ao buscar detalhes do alongamento');
-  }
-});
-
-// Rota para editar um alongamento
-app.post('/stretches/edit/:id', async (req, res) => {
-  const { id } = req.params;
-  const { exercise_name, muscle_group, description, image_url, video_url } = req.body;
-
-  try {
-    const stretch = await StrechesDetails.findOne({ where: { id } });
-
-    if (stretch) {
-      stretch.exercise_name = exercise_name;
-      stretch.muscle_group = muscle_group;
-      stretch.description = description;
-      stretch.image_url = image_url;
-      stretch.video_url = video_url;
-      await stretch.save();
-      res.redirect('/stretches');
-    } else {
-      res.status(404).send('Alongamento não encontrado');
-    }
-  } catch (error) {
-    console.error('Erro ao editar detalhes do alongamento:', error);
-    res.status(500).send('Erro ao editar detalhes do alongamento');
-  }
-});
-
 
 app.get("/help", function (req, res) {
   res.render("help");
