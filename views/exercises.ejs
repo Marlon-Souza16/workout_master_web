@@ -26,16 +26,17 @@
             <% videoUrl = videoUrl.replace('watch?v=', 'embed/'); %>
           <% } %>
           <iframe src="<%= videoUrl %>" style="width: 100%; max-width: 300px; height: auto;" frameborder="0" allowfullscreen></iframe>
+          
         <% } %>
       </div>
-    <% }) %>
+      <% }) %>
   </div>
 </div>
 
 <div id="addExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
-    <span class="close" onclick="closeAddExerciseModal()">&times;</span>
-    <h2>Adicionar Novo Exercício</h2>
+    <span id="centralize-text" class="close" onclick="closeAddExerciseModal()">&times;</span>
+    <h2 id="centralize-text">Adicionar Exercício</h2>
     <form id="addExerciseForm" action="/exercises/add" method="POST">
       <label for="exercise_name">Nome do Exercício:</label>
       <input type="text" id="exercise_name" name="exercise_name" required><br>
@@ -47,7 +48,7 @@
       <input type="text" id="image_url" name="image_url"><br>
       <label for="video_url">URL do Vídeo:</label>
       <input type="text" id="video_url" name="video_url"><br>
-      <button type="submit">Adicionar Exercício</button>
+      <button class="addNewExercise-btn-form" type="submit">Adicionar Exercício</button>
     </form>
   </div>
 </div>
@@ -55,7 +56,7 @@
 <!-- Modal para Editar Exercício -->
 <div id="editExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
-    <span class="close" onclick="closeEditExerciseModal()">&times;</span>
+    <span id="centralize-text" class="close" onclick="closeEditExerciseModal()">&times;</span>
     <h2>Editar Exercício</h2>
     <form id="editExerciseForm" action="/exercises/edit" method="POST">
       <input type="hidden" id="edit_exercise_id" name="exercise_id">

@@ -92,7 +92,7 @@
     animation: blink 1s infinite;
 }
 
-.addNewExercise-btn{
+.addNewExercise-btn, .addNewExercise-btn-form{
     font-size: 1.2rem;
     background-color: transparent;
     border: 1px solid white;
@@ -103,6 +103,11 @@
 .addNewExercise-btn:hover{
     background-color: transparent;
     transform: scale3d(1.2, 1.2, 1.2);
+    animation: blink 1s infinite;
+}
+
+.addNewExercise-btn-form:hover{
+    background-color: transparent;
     animation: blink 1s infinite;
 }
 
@@ -158,6 +163,17 @@
     z-index: 1001;
 }
 
+.modal-content-select{
+    display: flex;
+    font-size: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: .5rem;
+    height: max-content;
+    justify-content: center;
+    z-index: 1001;
+}
+
 .close {
     color: white;
     width: 2.5rem;
@@ -179,7 +195,7 @@
     animation: blink 1s infinite;
   }
 
-#editExerciseModal, #addExerciseModal, #deleteExerciseModal{
+#editExerciseModal, #addExerciseModal, #deleteExerciseModal, #selectExerciseModal{
     display: none;
     position: fixed;
     z-index: 1000;
@@ -193,7 +209,7 @@
     font-size: 2rem;
 }
 
-#editExerciseForm, #addExerciseForm, #deleteExerciseForm{
+#editExerciseForm, #addExerciseForm, #deleteExerciseForm, #selectExerciseForm{
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -229,6 +245,23 @@
     transition: transform 1s;
 }
 
+.save-button {
+    background-color: transparent;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid white;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: transform 1s;
+    margin-left: 1rem;
+}
+
+.save-button:hover {
+    animation: blink 1s infinite;
+    transform: scale3d(1.2, 1.2, 1.2);
+    
+}
+
 #cancelBtn:hover{
     background-color: red;
     transform: scale3d(1.2, 1.2, 1.2);
@@ -245,7 +278,13 @@
     justify-content: center;
     gap: 1rem;
 }
+
+#list-style{
+    list-style: none;
+  }
+
+  .margin-teste{
+    margin-top: 2rem;
+  }
+
   /* --------------------------------------------------------------------------- */
-
-
-/* https://vercel.com/ */
