@@ -61,11 +61,14 @@ app.get("/myRoutine", async function (req, res) {
       }
     });
 
+    const exercises = await ExerciseDetails.findAll();
+    const stretches = await StrechesDetails.findAll();
+
     if (currentUser) {
       const groupedExercises = _.groupBy(currentUser.Workouts, 'day');
-      res.render("myroutine", { userLoggedIn: true, currentUser, groupedExercises });
+      res.render("myroutine", { userLoggedIn: true, currentUser, groupedExercises, exercises, stretches });
     } else {
-      res.render("myroutine", { userLoggedIn: false, currentUser: null, groupedExercises: {} });
+      res.render("myroutine", { userLoggedIn: false, currentUser: null, groupedExercises: {}, exercises, stretches });
     }
   } catch (error) {
     console.error('Erro ao buscar o usuário:', error);
@@ -97,6 +100,44 @@ app.post('/myRoutine/addExercise', async (req, res) => {
   } catch (error) {
     console.error('Erro ao adicionar exercício:', error);
     res.status(500).send('Erro ao adicionar exercício');
+  }
+});
+
+app.post('/myRoutine/addSelectedExercise', async (req, res) => {
+  const { day, exerciseId, type } = req.body;
+
+  try {
+    const currentUser = await User.findOne({ where: { email: 'marlondesouzajlle@hotmail.com' } });
+
+    if (currentUser) {
+      let exerciseDetails;
+      if (type === 'exercise') {
+        exerciseDetails = await ExerciseDetails.findOne({ where: { id: exerciseId } });
+      } else if (type === 'stretch') {
+        exerciseDetails = await StrechesDetails.findOne({ where: { id: exerciseId } });
+      }
+
+      if (exerciseDetails) {
+        await Workout.create({
+          user_id: currentUser.id,
+          day,
+          name: exerciseDetails.exercise_name,
+          muscle_group: exerciseDetails.muscle_group,
+          description: exerciseDetails.description,
+          image_url: exerciseDetails.image_url,
+          video_url: exerciseDetails.video_url
+        });
+
+        res.redirect('/myRoutine');
+      } else {
+        res.status(404).send('Exercício não encontrado');
+      }
+    } else {
+      res.status(404).send('Usuário não encontrado');
+    }
+  } catch (error) {
+    console.error('Erro ao adicionar exercício selecionado:', error);
+    res.status(500).send('Erro ao adicionar exercício selecionado');
   }
 });
 
@@ -328,8 +369,16 @@ app.get("/help", function (req, res) {
 
 app.get("/profile", async function (req, res) {
   try {
-    currentUser = await User.findOne({ where: { email: 'marlondesouzajlle@hotmail.com' } });
+    currentUser = await User.findOne({
+      where: { email: 'marlondesouzajlle@hotmail.com' },
+      include: {
+        model: Workout,
+        required: false
+      }
+    });
+
     if (currentUser) {
+      currentUser.hasWorkoutRoutine = currentUser.Workouts.length > 0;
       res.render("profile", { currentUser });
     } else {
       res.status(404).send('Usuário não encontrado');

@@ -4,23 +4,12 @@
 }
 
 .profile-link{
-    color: aqua;
-}
-
-.save-button {
-    background-color: #4CAF50;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.save-button:hover {
-    background-color: #45a049;
-}
+
 
 .save-button i {
     margin-right: 5px;
 }
+

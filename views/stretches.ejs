@@ -6,16 +6,15 @@
   <h2 id="centralize-text">Alongamentos</h2>
   <button class="addNewExercise-btn" onclick="openAddExerciseModal()">Adicionar Novo Alongamento</button>
 
-  <!-- Listagem de alongamentos -->
   <div class="exercises-list">
     <% exercises.forEach(exercise => { %>
       <div class="exercise-item">
         <h3 class="text_to_upper"><%= exercise.exercise_name %>
         <button class="edit-icon" onclick="openEditExerciseModal('<%= exercise.id %>', '<%= escape(exercise.exercise_name) %>', '<%= escape(exercise.muscle_group) %>', '<%= escape(exercise.description) %>', '<%= escape(exercise.image_url) %>', '<%= escape(exercise.video_url) %>')">
-          <i class="fas fa-pencil-alt fa-lg"></i> <!-- Aqui aplicamos o tamanho fa-lg -->
+          <i class="fas fa-pencil-alt fa-lg"></i> 
         </button>
         <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= escape(exercise.exercise_name) %>')">
-          <i class="fa-regular fa-trash-can fa-lg"></i> <!-- Aqui aplicamos o tamanho fa-lg -->
+          <i class="fa-regular fa-trash-can fa-lg"></i>
         </button></h3>
         <p class="text_to_upper">Grupo Muscular: <%= exercise.muscle_group %></p>
         <p class="text_justify"><%= exercise.description %></p>
@@ -37,8 +36,8 @@
 
 <div id="addExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
-    <span class="close" onclick="closeAddExerciseModal()">&times;</span>
-    <h2>Adicionar Novo Alongamento</h2>
+    <span id="centralize-text" class="close" onclick="closeAddExerciseModal()">&times;</span>
+    <h2 id="centralize-text">Adicionar Alongamento</h2>
     <form id="addExerciseForm" action="/stretches/add" method="POST">
       <label for="exercise_name">Nome do Alongamento:</label>
       <input type="text" id="exercise_name" name="exercise_name" required><br>
@@ -50,15 +49,14 @@
       <input type="text" id="image_url" name="image_url"><br>
       <label for="video_url">URL do Vídeo:</label>
       <input type="text" id="video_url" name="video_url"><br>
-      <button type="submit">Adicionar Alongamento</button>
+      <button class="addNewExercise-btn-form" type="submit">Adicionar Alongamento</button>
     </form>
   </div>
 </div>
 
-<!-- Modal para Editar Alongamento -->
 <div id="editExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
-    <span class="close" onclick="closeEditExerciseModal()">&times;</span>
+    <span id="centralize-text" class="close" onclick="closeEditExerciseModal()">&times;</span>
     <h2>Editar Alongamento</h2>
     <form id="editExerciseForm" action="/stretches/edit" method="POST">
       <input type="hidden" id="edit_exercise_id" name="exercise_id">
@@ -77,7 +75,6 @@
   </div>
 </div>
 
-<!-- Modal para Confirmar Exclusão -->
 <div id="deleteExerciseModal" class="modal" style="display: none;">
   <div class="modal-content-delete">
     <span class="close" onclick="closeDeleteExerciseModal()">&times;</span>

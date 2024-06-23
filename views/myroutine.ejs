@@ -8,40 +8,32 @@
   <% if (userLoggedIn) { %>
     <% if (Object.keys(groupedExercises).length === 0) { %>
       <p>Você não tem nenhum exercício na sua rotina. Adicione um novo exercício abaixo:</p>
-      <form id="newExerciseForm" action="/myRoutine/addExercise" method="post">
-        <label for="day">Dia:</label>
-        <input type="text" id="day" name="day" required><br>
-        <label for="name">Nome do Exercício:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="muscleGroup">Grupo Muscular:</label>
-        <input type="text" id="muscleGroup" name="muscleGroup" required><br>
-        <label for="description">Descrição:</label>
-        <textarea id="description" name="description"></textarea><br>
-        <label for="imageUrl">URL da Imagem:</label>
-        <input type="text" id="imageUrl" name="imageUrl"><br>
-        <label for="videoUrl">URL do Vídeo:</label>
-        <input type="text" id="videoUrl" name="videoUrl"><br>
-        <button type="submit">Adicionar Exercício</button>
-      </form>
+      <button class="addNewExercise-btn" onclick="openSelectExerciseModal()">Adicionar Novo Exercício</button>
     <% } else { %>
       <% Object.keys(groupedExercises).forEach(day => { %>
-        <div class="workout-routine">
-          <h3 id="align-button"><%= day %><button class="addNewExercise" onclick="openAddExerciseModal('<%= day %>')">+</button></h3>
+        <div class="exercise-item" >
+          <h3 id="align-button"><%= day %><button class="addNewExercise" onclick="openSelectExerciseModal('<%= day %>')">+</button></h3>
           <ul>
             <% groupedExercises[day].forEach(exercise => { %>
-              <li>
-                <span><strong><%= exercise.name %></strong> - <%= exercise.muscle_group %></span>
+              <p class="margin-teste"></p>
+              <li id="list-style">
+                <span id="centralize-text" class="text_to_upper"><strong><%= exercise.name %></strong> - <%= exercise.muscle_group %></span>
                 <span>
                   <button class="edit-icon" onclick="editExercise('<%= exercise.id %>')"><i class="fas fa-pencil-alt"></i></button>
-                  <button class="delete-icon" onclick="deleteExercise('<%= exercise.id %>')"><i class="fa-regular fa-trash-can"></i></button>
+                  <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= exercise.name %>')"><i class="fa-regular fa-trash-can"></i></button>
                 </span>
                 <br>
                 <br>
-                Descrição: <span id="description_<%= exercise.id %>"><%= exercise.description %></span><br>
+                <p class="text_justify">Descrição: <span id="description_<%= exercise.id %>"><%= exercise.description %></span></p>
                 <% if (exercise.image_url) { %>
-                  <img src="<%= exercise.image_url %>" alt="Imagem do exercício">
-                <% } else if (exercise.video_url) { %>
-                  <iframe width="560" height="315" src="<%= exercise.video_url %>" frameborder="0" allowfullscreen></iframe>
+                  <img id="centralize-text" src="<%= exercise.image_url %>" alt="Imagem do exercício" style="width: 100%; max-width: 300px; height: auto;"/>
+                <% } %>
+                <% if (exercise.video_url) { %>
+                  <% let videoUrl = exercise.video_url; %>
+                  <% if (videoUrl.includes('youtube.com/watch')) { %>
+                    <% videoUrl = videoUrl.replace('watch?v=', 'embed/'); %>
+                  <% } %>
+                  <iframe width="560" height="315" src="<%= videoUrl %>" frameborder="0" allowfullscreen></iframe>
                 <% } %>
                 <br>
               </li>
@@ -56,49 +48,75 @@
   <% } %>
 </div>
 
-<div id="addExerciseModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeAddExerciseModal()">&times;</span>
-    <h2>Adicionar Novo Exercício</h2>
-    <form id="addExerciseForm" action="/myRoutine/addExercise" method="post">
-      <input type="hidden" id="dayInput" name="day">
-      <label for="name">Nome do Exercício:</label>
-      <input type="text" id="name" name="name" required><br>
-      <label for="muscleGroup">Grupo Muscular:</label>
-      <input type="text" id="muscleGroup" name="muscleGroup" required><br>
-      <label for="description">Descrição:</label>
-      <textarea id="description" name="description"></textarea><br>
-      <label for="imageUrl">URL da Imagem:</label>
-      <input type="text" id="imageUrl" name="imageUrl"><br>
-      <label for="videoUrl">URL do Vídeo:</label>
-      <input type="text" id="videoUrl" name="videoUrl"><br>
-      <button type="submit">Adicionar Exercício</button>
+<div id="selectExerciseModal" class="modal" style="display: none;">
+  <div class="modal-content-select">
+    <span id="centralize-text" class="close" onclick="closeSelectExerciseModal()">&times;</span>
+    <h2>Selecionar Exercício</h2>
+    <form id="selectExerciseForm" action="/myRoutine/addSelectedExercise" method="post">
+      <label for="selectDayInput">Dia:</label>
+      <select id="selectDayInput" name="day" required>
+        <option value="Segunda-feira">Segunda-feira</option>
+        <option value="Terça-feira">Terça-feira</option>
+        <option value="Quarta-feira">Quarta-feira</option>
+        <option value="Quinta-feira">Quinta-feira</option>
+        <option value="Sexta-feira">Sexta-feira</option>
+        <option value="Sábado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+      </select><br>
+      <label for="type">Tipo:</label>
+      <select id="type" name="type" required onchange="updateExerciseOptions()">
+        <option value="exercise">Exercício</option>
+        <option value="stretch">Alongamento</option>
+      </select><br>
+      <label for="exerciseId">Escolha um exercício:</label>
+      <select id="exerciseId" name="exerciseId" required>
+        <% exercises.forEach(exercise => { %>
+          <option value="<%= exercise.id %>" data-type="exercise"><%= exercise.exercise_name %> - <%= exercise.muscle_group %></option>
+        <% }); %>
+        <% stretches.forEach(stretch => { %>
+          <option value="<%= stretch.id %>" data-type="stretch"><%= stretch.exercise_name %> - <%= stretch.muscle_group %></option>
+        <% }); %>
+      </select><br>
+      <button class="addNewExercise-btn-form" type="submit">Adicionar Exercício Selecionado</button>
     </form>
   </div>
 </div>
 
 <div id="deleteExerciseModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeConfirmationModal()">&times;</span>
-    <p>Você tem certeza que deseja deletar este exercício?</p>
-    <button id="confirmBtn">Confirmar</button>
-    <button id="cancelBtn">Cancelar</button>
+  <div class="modal-content-delete">
+    <span id="centralize-text" class="close" onclick="closeDeleteExerciseModal()">&times;</span>
+    <h3>Excluir Exercício</h3>
+    <span><i class="fa-regular fa-4x fa-circle-question"></i></span>
+    <p id="deleteExerciseMessage"></p>
+    <form id="deleteExerciseForm" action="/myRoutine/deleteExercise" method="POST">
+      <input type="hidden" id="delete_exercise_id" name="exerciseId">
+      <button type="submit">Excluir</button>
+    </form>
   </div>
 </div>
-<div id="overlay" class="overlay" style="display: none;" onclick="closeConfirmationModal()"></div>
+<div id="overlay" class="overlay" style="display: none;" onclick="closeDeleteExerciseModal()"></div>
 
 <%- include("./partials/footer.ejs"); -%>
 
 <script>
-  function openAddExerciseModal(day) {
-    document.getElementById('dayInput').value = day;
-    document.getElementById('addExerciseModal').style.display = 'block';
+  function openSelectExerciseModal(day) {
+    document.getElementById('selectDayInput').value = day || '';
+    document.getElementById('selectExerciseModal').style.display = 'block';
     document.getElementById('overlay').style.display = 'block';
+    updateExerciseOptions();
   }
 
-  function closeAddExerciseModal() {
-    document.getElementById('addExerciseModal').style.display = 'none';
+  function closeSelectExerciseModal() {
+    document.getElementById('selectExerciseModal').style.display = 'none';
     document.getElementById('overlay').style.display = 'none';
+  }
+
+  function updateExerciseOptions() {
+    const type = document.getElementById('type').value;
+    const exerciseOptions = document.getElementById('exerciseId').options;
+    for (let i = 0; i < exerciseOptions.length; i++) {
+      exerciseOptions[i].style.display = exerciseOptions[i].getAttribute('data-type') === type ? 'block' : 'none';
+    }
   }
 
   function editExercise(exerciseId) {
@@ -139,40 +157,15 @@
     });
   }
 
-  function deleteExercise(exerciseId) {
-    var confirmationModal = document.getElementById("deleteExerciseModal");
-    var overlay = document.getElementById("overlay");
-    
-    confirmationModal.style.display = "block";
-    overlay.style.display = "block";
-    
-    var confirmBtn = document.getElementById("confirmBtn");
-    var cancelBtn = document.getElementById("cancelBtn");
-    
-    confirmBtn.onclick = function() {
-      var form = document.createElement('form');
-      form.method = 'POST';
-      form.action = '/myRoutine/deleteExercise';
-
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'exerciseId';
-      input.value = exerciseId;
-
-      form.appendChild(input);
-      document.body.appendChild(form);
-
-      form.submit();
-    };
-    
-    cancelBtn.onclick = function() {
-      confirmationModal.style.display = "none";
-      overlay.style.display = "none";
-    };
+  function openDeleteExerciseModal(exerciseId, name) {
+    document.getElementById('delete_exercise_id').value = exerciseId;
+    document.getElementById('deleteExerciseMessage').innerText = `Tem certeza que deseja excluir o exercício "${name}"?`;
+    document.getElementById('deleteExerciseModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
   }
 
-  function closeConfirmationModal() {
-    document.getElementById('confirmationModal').style.display = 'none';
+  function closeDeleteExerciseModal() {
+    document.getElementById('deleteExerciseModal').style.display = 'none';
     document.getElementById('overlay').style.display = 'none';
   }
 </script>

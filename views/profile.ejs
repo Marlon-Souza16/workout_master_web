@@ -20,14 +20,14 @@
         <span id="cpf"><%= currentUser.cpf %></span>
         <span class="edit-icon" onclick="editField('cpf')"><i class="fas fa-pencil-alt"></i></span>
     </p>
+    <% if (currentUser.hasWorkoutRoutine) { %>
+        <p class="text"> Tem treino associado: <a class="profile-link" href="/myRoutine">SIM</a></p>
+    <% } else { %>
+        <p class="text"> Tem treino associado: NÃO</p>
+    <% } %>
     <button id="saveButton" onclick="saveChanges()" style="display: none;" class="save-button">
         <i class="fas fa-check"></i> Salvar
     </button>
-    <% if (currentUser.hasWorkoutRoutine) { %>
-       <p class="text"> Tem treino associado: <a class="profile-link" href="/myRoutine">SIM</a></p>
-    <% } else { %>
-        <span>Tem treino associado: NÃO</span>
-    <% } %>
 </div>
 
 <script>
