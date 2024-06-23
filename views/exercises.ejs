@@ -4,27 +4,29 @@
 
 <div class="main-container">
   <h2 id="centralize-text">Exercícios</h2>
-  <button onclick="openAddExerciseModal()">Adicionar Novo Exercício</button>
+  <button class="addNewExercise-btn" onclick="openAddExerciseModal()">Adicionar Novo Exercício</button>
 
   <!-- Listagem de exercícios -->
   <div class="exercises-list">
     <% exercises.forEach(exercise => { %>
       <div class="exercise-item">
-        <h3 class="text_to_upper"><%= exercise.exercise_name %></h3>
+        <h3 class="text_to_upper"><%= exercise.exercise_name %>
+        <button class="edit-icon" onclick="openEditExerciseModal('<%= exercise.id %>', '<%= exercise.exercise_name %>', '<%= exercise.muscle_group %>', '<%= exercise.description %>', '<%= exercise.image_url %>', '<%= exercise.video_url %>')"><i class="fas fa-pencil-alt"></i></button>
+        <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= exercise.exercise_name %>')"><i class="fa-regular fa-trash-can"></i></button></h3>
         <p class="text_to_upper">Grupo Muscular: <%= exercise.muscle_group %></p>
-        <p class="text_justify"><%= exercise.description %></p>
+        <p class="text_justify" id="description_<%= exercise.id %>"><%= exercise.description %></p>
         <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
-        <a href="<%= exercise.video_url %>" target="_blank">Ver Vídeo</a>
+        <a href="<%= exercise.video_url %>" target="_blank"></a>
       </div>
     <% }) %>
   </div>
 </div>
 
-<div id="addExerciseModal" class="modal">
+<div id="addExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
     <span class="close" onclick="closeAddExerciseModal()">&times;</span>
     <h2>Adicionar Novo Exercício</h2>
-    <form action="/exercises/add" method="POST">
+    <form id="addExerciseForm" action="/exercises/add" method="POST">
       <label for="exercise_name">Nome do Exercício:</label>
       <input type="text" id="exercise_name" name="exercise_name" required><br>
       <label for="muscle_group">Grupo Muscular:</label>
@@ -40,14 +42,80 @@
   </div>
 </div>
 
+<!-- Modal para Editar Exercício -->
+<div id="editExerciseModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeEditExerciseModal()">&times;</span>
+    <h2>Editar Exercício</h2>
+    <form id="editExerciseForm" action="/exercises/edit" method="POST">
+      <input type="hidden" id="edit_exercise_id" name="exercise_id">
+      <label for="edit_exercise_name">Nome do Exercício:</label>
+      <input type="text" id="edit_exercise_name" name="exercise_name" required><br>
+      <label for="edit_muscle_group">Grupo Muscular:</label>
+      <input type="text" id="edit_muscle_group" name="muscle_group" required><br>
+      <label for="edit_description">Descrição:</label>
+      <textarea id="edit_description" name="description"></textarea><br>
+      <label for="edit_image_url">URL da Imagem:</label>
+      <input type="text" id="edit_image_url" name="image_url"><br>
+      <label for="edit_video_url">URL do Vídeo:</label>
+      <input type="text" id="edit_video_url" name="video_url"><br>
+      <button type="submit">Salvar Alterações</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para Confirmar Exclusão -->
+<div id="deleteExerciseModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeDeleteExerciseModal()">&times;</span>
+    <h2>Excluir Exercício</h2>
+    <p id="deleteExerciseMessage"></p>
+    <form id="deleteExerciseForm" action="/exercises/delete" method="POST">
+      <input type="hidden" id="delete_exercise_id" name="exercise_id">
+      <button type="submit">Excluir</button>
+    </form>
+  </div>
+</div>
+<div id="overlay" class="overlay" style="display: none;" onclick="closeDeleteExerciseModal()"></div>
+
 <%- include("./partials/footer.ejs"); -%>
 
 <script>
   function openAddExerciseModal() {
     document.getElementById('addExerciseModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
   }
 
   function closeAddExerciseModal() {
     document.getElementById('addExerciseModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  function openEditExerciseModal(id, name, muscle_group, description, image_url, video_url) {
+    document.getElementById('edit_exercise_id').value = id;
+    document.getElementById('edit_exercise_name').value = name;
+    document.getElementById('edit_muscle_group').value = muscle_group;
+    document.getElementById('edit_description').value = description;
+    document.getElementById('edit_image_url').value = image_url;
+    document.getElementById('edit_video_url').value = video_url;
+    document.getElementById('editExerciseModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+  }
+
+  function closeEditExerciseModal() {
+    document.getElementById('editExerciseModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  function openDeleteExerciseModal(id, name) {
+    document.getElementById('delete_exercise_id').value = id;
+    document.getElementById('deleteExerciseMessage').innerText = `Tem certeza que deseja excluir o exercício "${name}"?`;
+    document.getElementById('deleteExerciseModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+  }
+
+  function closeDeleteExerciseModal() {
+    document.getElementById('deleteExerciseModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
   }
 </script>

@@ -36,15 +36,13 @@
 
 @keyframes blink {
     0% { opacity: 1; }
-    50% { opacity: 0.8; }
+    50% { opacity: 0.6; }
     100% { opacity: 1; }
 }
 
 .addNewExercise{
-    margin-left: .8rem;
     color: white;
     width: 2rem;
-    height: 2rem;
     font-size: 1.5rem;
     background-color: transparent;
     border-color: white;
@@ -56,26 +54,56 @@
 .addNewExercise:hover{
     transform: scale3d(1.5, 1.5, 1.5);
     animation: blink 1s infinite;
+    background-color: transparent;
 }
 
 /* --------------------------------------------------  */
 
 .edit-icon {
     cursor: pointer;
-    margin-left: .4rem;
+    background-color: transparent;
+    transition: transform 1s;
+    width: .1rem;
 }
 
 .fa-pencil-alt {
     font-size: .9rem;
+    background-color: none;
+    transition: transform 1s;
 }
 
 .delete-icon{
     cursor: pointer;
-    margin-left: .4rem;
+    background-color: transparent;
+    transition: transform 1s;
+    width: .1rem;
 }
 
+.edit-icon:hover{
+    background-color: transparent;
+    color: rgb(0, 255, 30);
+    transform: scale3d(1.5, 1.5, 1.5);
+    animation: blink 1s infinite;
+}
 .delete-icon:hover{
     color: red;
+    background-color: transparent;
+    transform: scale3d(1.5, 1.5, 1.5);
+    animation: blink 1s infinite;
+}
+
+.addNewExercise-btn{
+    font-size: 1.2rem;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 20px;
+    transition: transform 1s;
+}
+
+.addNewExercise-btn:hover{
+    background-color: transparent;
+    transform: scale3d(1.2, 1.2, 1.2);
+    animation: blink 1s infinite;
 }
 
 .text input {
