@@ -14,12 +14,13 @@
         <button class="edit-icon" onclick="openEditExerciseModal('<%= exercise.id %>', '<%= escape(exercise.exercise_name) %>', '<%= escape(exercise.muscle_group) %>', '<%= escape(exercise.description) %>', '<%= escape(exercise.image_url) %>', '<%= escape(exercise.video_url) %>')"><i class="fas fa-pencil-alt fa-lg"></i></button>
         <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= escape(exercise.exercise_name) %>')"><i class="fa-regular fa-trash-can fa-lg"></i></button></h3>
         <p class="text_to_upper">Grupo Muscular: <%= exercise.muscle_group %></p>
-        <p class="text_justify" id="description_<%= exercise.id %>"><%= exercise.description %></p>
+        <p class="text_justify" id="description_<%= exercise.id %>">&ensp;&ensp;&ensp;&ensp;<%= exercise.description %></p>
 
         <% if (exercise.image_url) { %>
         <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
         <% } %>
-        
+        <br>
+        <br>
         <% if (exercise.video_url) { %>
           <% let videoUrl = exercise.video_url; %>
           <% if (videoUrl.includes('youtube.com/watch')) { %>
@@ -84,7 +85,7 @@
     <p id="deleteExerciseMessage"></p>
     <form id="deleteExerciseForm" action="/exercises/delete" method="POST">
       <input type="hidden" id="delete_exercise_id" name="exercise_id">
-      <button type="submit">Excluir</button>
+      <button class="addNewExercise-btn-form" type="submit">Excluir</button>
     </form>
   </div>
 </div>
