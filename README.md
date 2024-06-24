@@ -34,8 +34,8 @@ Com uma abordagem centrada no usuário e uma ampla gama de recursos, o presente 
 
 🛠️ Construído com
 
-- React - Para desenvolver o front end
-- Python - Utilizado para o backend, e para configurar a Api.
+- Ejs - Para desenvolver o front end
+- JavaScript - Utilizado para o backend, e para configurar a Api.
 - OpenAi - Sera configurada a api para criar um chatbot sobre dúvida de treinos.
 - ChromaDb - Sera utilizado como banco de dados vetorial para uso da Api. 
 - MariaDB - Banco de dados utilizado.
