@@ -17,7 +17,7 @@
           <i class="fa-regular fa-trash-can fa-lg"></i>
         </button></h3>
         <p class="text_to_upper">Grupo Muscular: <%= exercise.muscle_group %></p>
-        <p class="text_justify"><%= exercise.description %></p>
+        <p class="text_justify">&ensp;&ensp;&ensp;&ensp;<%= exercise.description %></p>
         <% if (exercise.image_url) { %>
           <img src="<%= exercise.image_url %>" alt="<%= exercise.exercise_name %>" style="width: 100%; max-width: 300px; height: auto;"/>
           <% } %>
@@ -83,7 +83,7 @@
     <p id="deleteExerciseMessage"></p>
     <form id="deleteExerciseForm" action="/stretches/delete" method="POST">
       <input type="hidden" id="delete_exercise_id" name="exercise_id">
-      <button type="submit">Excluir</button>
+      <button class="addNewExercise-btn-form" type="submit">Excluir</button>
     </form>
   </div>
 </div>

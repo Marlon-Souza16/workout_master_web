@@ -41,6 +41,8 @@
         field.appendChild(inputField);
         var saveButton = document.createElement('button');
         saveButton.textContent = 'Salvar';
+        saveButton.id = 'text-size'
+        saveButton.className = 'addNewExercise-btn';
         saveButton.onclick = function() {
             saveChanges(fieldId);
         };
