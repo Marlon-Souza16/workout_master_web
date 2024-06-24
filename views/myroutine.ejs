@@ -11,34 +11,39 @@
       <button class="addNewExercise-btn" onclick="openSelectExerciseModal()">Adicionar Novo Exercício</button>
     <% } else { %>
       <% Object.keys(groupedExercises).forEach(day => { %>
-        <div class="exercise-item" >
-          <h3 id="align-button"><%= day %><button class="addNewExercise" onclick="openSelectExerciseModal('<%= day %>')">+</button></h3>
-          <ul>
-            <% groupedExercises[day].forEach(exercise => { %>
-              <p class="margin-teste"></p>
-              <li id="list-style">
-                <span id="centralize-text" class="text_to_upper"><strong><%= exercise.name %></strong> - <%= exercise.muscle_group %></span>
-                <span>
-                  <button class="edit-icon" onclick="editExercise('<%= exercise.id %>')"><i class="fas fa-pencil-alt"></i></button>
-                  <button class="delete-icon" onclick="openDeleteExerciseModal('<%= exercise.id %>', '<%= exercise.name %>')"><i class="fa-regular fa-trash-can"></i></button>
-                </span>
-                <br>
-                <br>
-                <p class="text_justify">Descrição: <span id="description_<%= exercise.id %>"><%= exercise.description %></span></p>
-                <% if (exercise.image_url) { %>
-                  <img id="centralize-text" src="<%= exercise.image_url %>" alt="Imagem do exercício" style="width: 100%; max-width: 300px; height: auto;"/>
-                <% } %>
-                <% if (exercise.video_url) { %>
-                  <% let videoUrl = exercise.video_url; %>
-                  <% if (videoUrl.includes('youtube.com/watch')) { %>
-                    <% videoUrl = videoUrl.replace('watch?v=', 'embed/'); %>
+        <div class="exercise-day">
+          <h3 id="align-button">
+            <%= day %> 
+            <button id="arrow_<%= day %>" class="arrow-btn" onclick="toggleDayExercises('<%= day %>')">▼</button>
+            <button class="addNewExercise" onclick="event.stopPropagation(); openSelectExerciseModal('<%= day %>')">+</button>
+          </h3>
+          <div id="exercises_<%= day %>" class="exercise-item" style="display: none;">
+            <ul>
+              <% groupedExercises[day].forEach(exercise => { %>
+                <p class="margin-teste"></p>
+                <li id="list-style">
+                  <span id="centralize-text" class="text_to_upper"><strong><%= exercise.name %></strong> - <%= exercise.muscle_group %></span>
+                  <span>
+                    <button class="edit-icon" onclick="editExercise('<%= exercise.id %>')"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="delete-icon" onclick="event.stopPropagation(); openDeleteExerciseModal('<%= exercise.id %>', '<%= exercise.name %>')"><i class="fa-regular fa-trash-can"></i></button>
+                  </span>
+                  <br><br>
+                  <p class="text_justify">Descrição: <span id="description_<%= exercise.id %>"><%= exercise.description %></span></p>
+                  <% if (exercise.image_url) { %>
+                    <img id="centralize-text" src="<%= exercise.image_url %>" alt="Imagem do exercício" style="width: 100%; max-width: 300px; height: auto;"/>
                   <% } %>
-                  <iframe width="560" height="315" src="<%= videoUrl %>" frameborder="0" allowfullscreen></iframe>
-                <% } %>
-                <br>
-              </li>
-            <% }); %>
-          </ul>
+                  <% if (exercise.video_url) { %>
+                    <% let videoUrl = exercise.video_url; %>
+                    <% if (videoUrl.includes('youtube.com/watch')) { %>
+                      <% videoUrl = videoUrl.replace('watch?v=', 'embed/'); %>
+                    <% } %>
+                    <iframe width="560" height="315" src="<%= videoUrl %>" frameborder="0" allowfullscreen></iframe>
+                  <% } %>
+                  <br>
+                </li>
+              <% }); %>
+            </ul>
+          </div>
         </div>
       <% }); %>
     <% } %>
@@ -100,6 +105,7 @@
 
 <script>
   function openSelectExerciseModal(day) {
+    event.stopPropagation(); // Previna a propagação do evento de clique
     document.getElementById('selectDayInput').value = day || '';
     document.getElementById('selectExerciseModal').style.display = 'block';
     document.getElementById('overlay').style.display = 'block';
@@ -158,6 +164,7 @@
   }
 
   function openDeleteExerciseModal(exerciseId, name) {
+    event.stopPropagation(); // Previna a propagação do evento de clique
     document.getElementById('delete_exercise_id').value = exerciseId;
     document.getElementById('deleteExerciseMessage').innerText = `Tem certeza que deseja excluir o exercício "${name}"?`;
     document.getElementById('deleteExerciseModal').style.display = 'block';
@@ -167,5 +174,17 @@
   function closeDeleteExerciseModal() {
     document.getElementById('deleteExerciseModal').style.display = 'none';
     document.getElementById('overlay').style.display = 'none';
+  }
+
+  function toggleDayExercises(day) {
+    const exerciseList = document.getElementById(`exercises_${day}`);
+    const arrow = document.getElementById(`arrow_${day}`);
+    if (exerciseList.style.display === 'none') {
+      exerciseList.style.display = 'block';
+      arrow.innerText = '▲';
+    } else {
+      exerciseList.style.display = 'none';
+      arrow.innerText = '▼';
+    }
   }
 </script>
