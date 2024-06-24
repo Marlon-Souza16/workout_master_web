@@ -9,8 +9,8 @@ const fs = require('fs');
 const sequelize = require('./config/database');
 const User = require('./models/Users');
 const Workout = require('./models/Workout');
-const ExerciseDetails = require('./models/ExerciseDetails'); // Adicionado novo modelo
-const StrechesDetails = require('./models/StrechesDetails'); // Adicionado novo modelo
+const ExerciseDetails = require('./models/ExerciseDetails'); 
+const StrechesDetails = require('./models/StrechesDetails'); 
 const bcrypt = require('bcrypt');
 let currentUser;
 
@@ -24,19 +24,16 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Middleware para definir currentUser globalmente
 app.use((req, res, next) => {
   res.locals.currentUser = currentUser || null;
   next();
 });
 
-// Verifica se a pasta uploads existe, caso contrário, cria
 const uploadDir = path.join(__dirname, 'public/uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configuração do Multer para upload de imagens
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDir);

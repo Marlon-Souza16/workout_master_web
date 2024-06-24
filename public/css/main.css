@@ -201,6 +201,21 @@
     animation: blink 1s infinite;
   }
 
+  .arrow-btn{
+    font-size: 1rem;
+    margin-left: .5rem;
+    color: white;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: transform 1s;
+  }
+
+  .arrow-btn:hover{
+    animation: blink 1s infinite;
+    background-color: transparent;
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
 #editExerciseModal, #addExerciseModal, #deleteExerciseModal, #selectExerciseModal{
     display: none;
     position: fixed;

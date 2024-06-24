@@ -6,7 +6,6 @@
   <h2 id="centralize-text">Exercícios</h2>
   <button class="addNewExercise-btn" onclick="openAddExerciseModal()">Adicionar Novo Exercício</button>
 
-  <!-- Listagem de exercícios -->
   <div class="exercises-list">
     <% exercises.forEach(exercise => { %>
       <div class="exercise-item">
@@ -54,7 +53,6 @@
   </div>
 </div>
 
-<!-- Modal para Editar Exercício -->
 <div id="editExerciseModal" class="modal" style="display: none;">
   <div class="modal-content">
     <span id="centralize-text" class="close" onclick="closeEditExerciseModal()">&times;</span>
@@ -71,12 +69,11 @@
       <input type="text" id="edit_image_url" name="image_url"><br>
       <label for="edit_video_url">URL do Vídeo:</label>
       <input type="text" id="edit_video_url" name="video_url"><br>
-      <button type="submit">Salvar Alterações</button>
+      <button class="addNewExercise-btn-form" type="submit">Salvar Alterações</button>
     </form>
   </div>
 </div>
 
-<!-- Modal para Confirmar Exclusão -->
 <div id="deleteExerciseModal" class="modal" style="display: none;">
   <div class="modal-content-delete">
     <span class="close" onclick="closeDeleteExerciseModal()">&times;</span>
